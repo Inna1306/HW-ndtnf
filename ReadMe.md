@@ -1,1 +1,1 @@
-Домашние задания по модулю "TypeScript, Nest.js, Yandex Cloud"
+Домашнее задание к занятию «1.3. IoС и DI. Библиотека reflect-metadata»
