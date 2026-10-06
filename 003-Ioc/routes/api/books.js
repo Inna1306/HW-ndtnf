@@ -1,5 +1,6 @@
 import express from 'express';
-import storage from '../../models/storage.js';
+import container from '../../container.js';
+import BooksRepository from '../../models/BooksRepository.js';
 import Book from '../../models/book.js';
 import upload from '../../middleware/upload.js';
 import fs from 'fs';
@@ -8,13 +9,14 @@ const router = express.Router();
 
 // Получить все книги
 router.get('/', (req, res) => {
-    res.json(storage.books);
+    const repo = container.get(BooksRepository);
+    res.json(repo.getBooks());
 });
 
 // Получить книгу по ID
 router.get('/:id', (req, res) => {
-    const { id } = req.params;
-    const book = storage.books.find(b => b.id === id);
+    const repo = container.get(BooksRepository);
+    const book = repo.getBook(req.params.id);
     if (book) {
         res.json(book);
     } else {
@@ -42,53 +44,57 @@ router.post('/', upload, (req, res) => {
         fileBook,
     });
 
-    storage.books.push(newBook);
-    res.status(201).json(newBook);
+    const repo = container.get(BooksRepository);
+    const createdBook = repo.createBook(newBook);
+    res.status(201).json(createdBook);
 });
 
 // Обновить книгу (без изменения файла)
 router.put('/:id', (req, res) => {
     const { id } = req.params;
-    const idx = storage.books.findIndex(b => b.id === id);
-    if (idx === -1) {
+    const { title, description, authors, favorite, fileCover, fileName } = req.body;
+
+    const repo = container.get(BooksRepository);
+    const existingBook = repo.getBook(id);
+    if (!existingBook) {
         return res.status(404).json('404 | Книга не найдена');
     }
 
-    const { title, description, authors, favorite, fileCover, fileName } = req.body;
-    const updatedBook = {
-        ...storage.books[idx],
-        title: title !== undefined ? title : storage.books[idx].title,
-        description: description !== undefined ? description : storage.books[idx].description,
-        authors: authors !== undefined ? authors : storage.books[idx].authors,
-        favorite: favorite !== undefined ? (favorite === 'true' || favorite === true) : storage.books[idx].favorite,
-        fileCover: fileCover !== undefined ? fileCover : storage.books[idx].fileCover,
-        fileName: fileName !== undefined ? fileName : storage.books[idx].fileName,
+    const updatedData = {
+        title: title !== undefined ? title : existingBook.title,
+        description: description !== undefined ? description : existingBook.description,
+        authors: authors !== undefined ? authors : existingBook.authors,
+        favorite: favorite !== undefined ? (favorite === 'true' || favorite === true) : existingBook.favorite,
+        fileCover: fileCover !== undefined ? fileCover : existingBook.fileCover,
+        fileName: fileName !== undefined ? fileName : existingBook.fileName,
     };
-    storage.books[idx] = updatedBook;
+
+    const updatedBook = repo.updateBook(id, updatedData);
     res.json(updatedBook);
 });
 
 // Удалить книгу (и файл)
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
-    const idx = storage.books.findIndex(b => b.id === id);
-    if (idx === -1) {
+    const repo = container.get(BooksRepository);
+    const book = repo.getBook(id);
+    if (!book) {
         return res.status(404).json('404 | Книга не найдена');
     }
 
-    const book = storage.books[idx];
     if (book.fileBook && fs.existsSync(book.fileBook)) {
         fs.unlinkSync(book.fileBook);
     }
 
-    storage.books.splice(idx, 1);
+    repo.deleteBook(id);
     res.json('ok');
 });
 
 // Скачать файл книги
 router.get('/:id/download', (req, res) => {
     const { id } = req.params;
-    const book = storage.books.find(b => b.id === id);
+    const repo = container.get(BooksRepository);
+    const book = repo.getBook(id);
     if (!book) {
         return res.status(404).json('404 | Книга не найдена');
     }
