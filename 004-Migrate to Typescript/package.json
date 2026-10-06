@@ -1,0 +1,32 @@
+{
+  "name": "books",
+  "version": "1.0.0",
+  "description": "\"004-Migrate to Typescript\"",
+  "license": "ISC",
+  "author": "SolovtsevaIA",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^1.19.0",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "inversify": "^8.2.3",
+    "mongoose": "^9.11.0",
+    "multer": "^2.2.0",
+    "reflect-metadata": "^0.2.2",
+    "uuid": "^14.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^8.0.6",
+    "@babel/plugin-proposal-decorators": "^8.0.2",
+    "@babel/preset-env": "^8.0.6",
+    "nodemon": "^3.1.14",
+    "typescript": "^7.0.2"
+  },
+  "keywords": []
+}
