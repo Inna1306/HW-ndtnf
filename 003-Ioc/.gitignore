@@ -5,7 +5,7 @@ HELP.md
 dist
 doc
 uploads
-src
+
 
 
 # Logs
@@ -45,6 +45,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+src/
 
 # TypeScript v1 declaration files
 typings/

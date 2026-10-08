@@ -1,6 +1,8 @@
+import { injectable } from 'inversify';
 import storage from './storage.js';
 
-class BooksRepository {
+@injectable()
+export class BooksRepository {
     getBooks() {
         return storage.books;
     }

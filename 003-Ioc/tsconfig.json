@@ -43,8 +43,9 @@
     "emitDecoratorMetadata": true
   },
   "include": [
-    "src/**/*"
-, "container.js"  ],
+    "src/**/*",
+    "container.js"
+  ],
   "exclude": [
     "dist",
     "node_modules"
