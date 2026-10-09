@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   app:
     build: .
@@ -6,10 +8,8 @@ services:
     environment:
       - COUNTER_URL=http://counter:3001
       - NODE_ENV=production
-      - MONGO_URL=mongodb://mongo:27017/booksdb
     depends_on:
       - counter
-      - mongo
     volumes:
       - ./uploads:/app/uploads
     networks:
@@ -18,23 +18,11 @@ services:
   counter:
     build: ./counter
     ports:
-      - "3001:3001" # для отладки
+      - "3001:3001" 
     volumes:
       - ./counter/data:/data
     networks:
       - library-net
 
-  mongo:
-    image: mongo:7
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-    networks:
-      - library-net
-
 networks:
   library-net:
-
-volumes:
-  mongo-data:

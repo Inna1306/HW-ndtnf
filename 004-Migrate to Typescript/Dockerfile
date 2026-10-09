@@ -2,12 +2,21 @@ FROM node:22-alpine
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install --production
+# Нужны и dev-зависимости (typescript), чтобы собрать проект
+RUN npm install
 
-# Копируем весь проект (ES-модули)
-COPY . .
+# Копируем исходники TypeScript и конфиг компилятора
+COPY tsconfig.json ./
+COPY src ./src
+COPY views ./views
+
+# Компилируем TypeScript в dist/
+RUN npm run build \
+    # Удаляем dev-зависимости, оставляем только прод-код
+    && npm prune --omit=dev
 
 RUN mkdir -p uploads
 
+ENV NODE_ENV=production
 EXPOSE 8080
-CMD ["node", "app.js"]
+CMD ["node", "dist/app.js"]
