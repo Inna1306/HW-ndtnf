@@ -1,0 +1,31 @@
+{
+  "name": "books",
+  "version": "1.0.0",
+  "description": "\"Homework 004-Migrate to Typescript",
+  "license": "ISC",
+  "author": "SolovtsevaIA",
+  "type": "commonjs",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/app.js",
+    "dev": "npm run build && node dist/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^1.19.0",
+    "ejs": "^3.1.10",
+    "express": "^5.2.1",
+    "inversify": "^7.6.1",
+    "multer": "^2.2.0",
+    "reflect-metadata": "^0.2.2",
+    "uuid": "^14.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.10.1",
+    "typescript": "~5.9.3"
+  },
+  "keywords": []
+}
