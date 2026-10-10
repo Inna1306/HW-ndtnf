@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, NotFoundException, ParseIntPipe } from '@nestjs/common';
 import { BooksService } from './books.service';
 import type { Book } from './books.service';
 
@@ -12,8 +12,12 @@ export class BooksController {
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string): Book | undefined {
-        return this.booksService.findOne(Number(id));
+    findOne(@Param('id', ParseIntPipe) id: number): Book {
+        const book = this.booksService.findOne(id);
+        if (!book) {
+            throw new NotFoundException(`Book with id ${id} not found`);
+        }
+        return book;
     }
 
     @Post()
