@@ -1,1 +1,1 @@
-Домашние задания по модулю "TypeScript, Nest.js, Yandex Cloud"
+Домашнее задание к занятию «1.4. Перенос и интеграция JavaScript проекта на TypeScript»
