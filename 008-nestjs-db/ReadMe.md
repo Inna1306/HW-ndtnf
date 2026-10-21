@@ -1,1 +1,1 @@
-Домашнее задание по модулю "Система типов TypeScript. ООП. SOLID"
+Домашние задания по курсу "TypeScript, Nest.js, Yandex Cloud"
